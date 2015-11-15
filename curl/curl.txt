@@ -1,0 +1,20 @@
+# ID検索
+curl -v -H "Accept: application/json" -X GET http://localhost:8080/jjug-jax-rs/api/employees/1
+
+# 社員名検索
+curl -v -H "Accept: application/json" -X GET http://localhost:8080/jjug-jax-rs/api/employees?name=e
+
+# 新規追加（正しい入力）
+curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d "{\"name\":\"Mai Shiraishi\", \"joined_date\":\"2015-11-28\", \"department\":{\"dept_id\":1}}" http://localhost:8080/jjug-jax-rs/api/employees
+
+# 新規追加（間違った入力）
+curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d "{\"name\":\"111\", \"joined_date\":\"aaa\", \"department\":{\"dept_id\":\"aaa\"}}" http://localhost:8080/jjug-jax-rs/api/employees
+
+# 更新（正しい入力）
+curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X PUT -d "{\"name\":\"Nanami Hashimoto\", \"joined_date\":\"2015-11-30\", \"department\":{\"dept_id\":2}}" http://localhost:8080/jjug-jax-rs/api/employees/10
+
+# 更新（間違った入力）
+curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X PUT -d "{\"name\":\"111\", \"joined_date\":\"aaa\", \"department\":{\"dept_id\":\"aaa\"}}" http://localhost:8080/jjug-jax-rs/api/employees/10
+
+# 削除
+curl -v -H "Accept: application/json" -X DELETE http://localhost:8080/jjug-jax-rs/api/employees/10
