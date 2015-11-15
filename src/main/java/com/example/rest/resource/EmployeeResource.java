@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.metadata.ConstraintDescriptor;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -63,9 +64,6 @@ public class EmployeeResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByName(@QueryParam("name") @DefaultValue("") String name) throws Exception {
         List<Employee> entityList = employeeService.findByName(name);
-        if (entityList.isEmpty()) {
-            throw new NotFoundException("該当する社員が見つかりませんでした。");
-        }
         List<EmployeeDto> dtoList = convertToDtoList(entityList);
         return Response.ok(dtoList).build();
     }
@@ -77,6 +75,7 @@ public class EmployeeResource {
         // 部署の存在確認
         Integer deptId = Integer.valueOf(employeeForm.getDepartmentForm().getDeptId());
         if (!departmentService.exists(deptId)) {
+            // TODO: 404が適切か否か？
             throw new NotFoundException("該当する部署が存在しません。");
         }
         
