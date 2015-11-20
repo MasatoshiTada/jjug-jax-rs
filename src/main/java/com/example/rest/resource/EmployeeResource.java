@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.metadata.ConstraintDescriptor;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -62,7 +62,10 @@ public class EmployeeResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@QueryParam("name") @DefaultValue("") String name) throws Exception {
+    public Response findByName(@QueryParam("name") @DefaultValue("") 
+            @Pattern(regexp = "[a-zA-Z]*", message = "{employee.name.pattern.alphabet}")
+            @Size(max = 10, message = "{employee.name.size.string}")
+            String name) throws Exception {
         List<Employee> entityList = employeeService.findByName(name);
         List<EmployeeDto> dtoList = convertToDtoList(entityList);
         return Response.ok(dtoList).build();
@@ -75,8 +78,7 @@ public class EmployeeResource {
         // 部署の存在確認
         Integer deptId = Integer.valueOf(employeeForm.getDepartmentForm().getDeptId());
         if (!departmentService.exists(deptId)) {
-            // TODO: 404が適切か否か？
-            throw new NotFoundException("該当する部署が存在しません。");
+            throw new BadRequestException("該当する部署が存在しません。");
         }
         
         Employee employee = convertToEntity(null, employeeForm);
@@ -102,7 +104,7 @@ public class EmployeeResource {
         // 部署の存在確認
         Integer deptId = Integer.valueOf(employeeForm.getDepartmentForm().getDeptId());
         if (!departmentService.exists(deptId)) {
-            throw new NotFoundException("該当する部署が存在しません。");
+            throw new BadRequestException("該当する部署が存在しません。");
         }
         
         if (!employeeService.exists(id)) {

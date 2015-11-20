@@ -1,5 +1,6 @@
 package com.example.rest.form;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Pattern;
  * 
  * @author tada
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DepartmentForm {
 
     @JsonProperty("dept_id")
