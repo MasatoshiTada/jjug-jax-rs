@@ -79,10 +79,12 @@ public class EmployeeResource {
         return null;
     }
     
-    // TODO: 演習3-1. HTTPメソッドPOST、消費するメディアタイプ"application/json"を指定する
+    // TODO: 演習3-1. 消費するメディアタイプ"application/json"を指定する
     // curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d "{\"name\":\"Mai Shiraishi\", \"joined_date\":\"2015-11-28\", \"department\":{\"dept_id\":1}}" http://localhost:8080/jjug-jax-rs/api/employees
     // curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d "{\"name\":\"111\", \"joined_date\":\"aaa\", \"department\":{\"dept_id\":\"aaa\"}}" http://localhost:8080/jjug-jax-rs/api/employees
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
+    
     public Response insert(
             /* TODO: 演習3-2. この引数に対するBean Validationを有効化する */
             EmployeeForm employeeForm) throws Exception {
@@ -106,9 +108,9 @@ public class EmployeeResource {
         return null;
     }
     
-    // TODO: 演習4-1. HTTPメソッドPUTを指定する
     // curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X PUT -d "{\"name\":\"Nanami Hashimoto\", \"joined_date\":\"2015-11-30\", \"department\":{\"dept_id\":2}}" http://localhost:8080/jjug-jax-rs/api/employees/10
     // curl -v -H "Accept: application/json" -H "Content-Type: application/json" -X PUT -d "{\"name\":\"111\", \"joined_date\":\"aaa\", \"department\":{\"dept_id\":\"aaa\"}}" http://localhost:8080/jjug-jax-rs/api/employees/10
+    @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -131,12 +133,12 @@ public class EmployeeResource {
         Employee employeeFromDB = employeeService.findByEmpId(employee.getEmpId()).get();
         EmployeeDto employeeDto = convertToDto(employeeFromDB);
         URI location = uriInfo.getAbsolutePath();
-        // TODO: 演習4-2. HTTPステータスコード200 OKと共にロケーションと社員データをレスポンスする
+        // TODO: 演習4. HTTPステータスコード200 OKと共にロケーションと社員データをレスポンスする
         return null;
     }
     
-    // TODO: 演習5-1. HTTPメソッドDELETEを指定する
     // curl -v -H "Accept: application/json" -X DELETE http://localhost:8080/jjug-jax-rs/api/employees/10
+    @DELETE
     @Path("{id}")
     public Response delete(@PathParam("id") 
             @Min(value = 1, message = "{employee.empId.min}") Integer id) throws Exception {
@@ -146,7 +148,7 @@ public class EmployeeResource {
         employeeService.delete(id);
         
         URI location = uriInfo.getAbsolutePath();
-        // TODO: 演習5-2. HTTPステータスコード204 NO CONTENTと共にロケーションをレスポンスする
+        // TODO: 演習5. HTTPステータスコード204 NO CONTENTと共にロケーションをレスポンスする
         return null;
     }
     
