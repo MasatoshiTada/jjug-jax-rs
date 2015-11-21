@@ -10,10 +10,11 @@ import org.glassfish.jersey.CommonProperties;
  * JAX-RSを有効化するためのクラス。
  * @author tada
  */
-@ApplicationPath("api")
-public class MyApplication extends Application {
+// TODO: 演習1-1. Applicationクラスを継承する。アプリケーションパスは"api"を指定する。
 
-    @Override
+public class MyApplication    {
+
+//    @Override
     public Map<String, Object> getProperties() {
         Map<String, Object> properties = new HashMap<>();
         // JSONパーサーMOXyの無効化

@@ -38,7 +38,8 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author tada
  */
-@Path("employees")
+// TODO: 演習1-2. パスとして"employees"を指定する
+
 @RequestScoped
 public class EmployeeResource {
     
@@ -50,31 +51,37 @@ public class EmployeeResource {
     @Context
     private UriInfo uriInfo;
     
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findByEmpId(@PathParam("id") Integer id) throws Exception {
+    // TODO: 演習1-3. HTTPメソッドGET、パス"{id}"、生成するメディアタイプ"application/json"を指定する
+    public Response findByEmpId(
+            /* TODO: 演習1-4. パスパラメータidを取得する */
+            Integer id) throws Exception {
         Employee employee = employeeService.findByEmpId(id)
                 .orElseThrow(() -> new NotFoundException("該当する社員が見つかりませんでした。"));
         EmployeeDto employeeDto = convertToDto(employee);
-        return Response.ok(employeeDto).build();
+        // TODO: 演習1-5. HTTPステータスコード200 OKと共に社員データをレスポンスする
+        return null;
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@QueryParam("name") @DefaultValue("") 
-            @Pattern(regexp = "[a-zA-Z\\s]*", message = "{employee.name.pattern.alphabet.or.space}")
-            @Size(max = 10, message = "{employee.name.size.string}")
+    public Response findByName(
+            /* TODO: 演習2-1. クエリパラメータnameを取得する。デフォルト値は"" */
+            
+            /* TODO: 演習2-2. 正規表現"[a-zA-Z\\s]*" (メッセージ"{employee.name.pattern.alphabet.or.space}")、
+                     文字列長の最大値10 (メッセージ"{employee.name.size.string}")を指定する。 */
+            
             String name) throws Exception {
         List<Employee> entityList = employeeService.findByName(name);
         List<EmployeeDto> dtoList = convertToDtoList(entityList);
-        return Response.ok(dtoList).build();
+        // TODO: 演習2-3. HTTPステータスコード200 OKと共に社員データのリストをレスポンスする
+        return null;
     }
     
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    // TODO: 演習3-1. HTTPメソッドPOST、消費するメディアタイプ"application/json"を指定する
     @Produces(MediaType.APPLICATION_JSON)
-    public Response insert(@Valid EmployeeForm employeeForm) throws Exception {
+    public Response insert(
+            /* TODO: 演習3-2. この引数に対するBean Validationを有効化する */
+            EmployeeForm employeeForm) throws Exception {
         // 部署の存在確認
         Integer deptId = Integer.valueOf(employeeForm.getDepartmentForm().getDeptId());
         if (!departmentService.exists(deptId)) {
@@ -91,10 +98,11 @@ public class EmployeeResource {
         URI location = uriInfo.getAbsolutePathBuilder()
                 .path(employee.getEmpId().toString()).build();
         
-        return Response.created(location).entity(employeeDto).build();
+        // TODO: 演習3-3. HTTPステータスコード201 CREATEDと共にロケーションと社員データをレスポンスする
+        return null;
     }
     
-    @PUT
+    // TODO: 演習4-1. HTTPメソッドPUTを指定する
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -117,10 +125,11 @@ public class EmployeeResource {
         Employee employeeFromDB = employeeService.findByEmpId(employee.getEmpId()).get();
         EmployeeDto employeeDto = convertToDto(employeeFromDB);
         URI location = uriInfo.getAbsolutePath();
-        return Response.ok(employeeDto).location(location).build();
+        // TODO: 演習4-2. HTTPステータスコード200 OKと共にロケーションと社員データをレスポンスする
+        return null;
     }
     
-    @DELETE
+    // TODO: 演習5-1. HTTPメソッドDELETEを指定する
     @Path("{id}")
     public Response delete(@PathParam("id") 
             @Min(value = 1, message = "{employee.empId.min}") Integer id) throws Exception {
@@ -130,7 +139,8 @@ public class EmployeeResource {
         employeeService.delete(id);
         
         URI location = uriInfo.getAbsolutePath();
-        return Response.noContent().location(location).build();
+        // TODO: 演習5-2. HTTPステータスコード204 NO CONTENTと共にロケーションをレスポンスする
+        return null;
     }
     
     private EmployeeDto convertToDto(Employee entity) {
