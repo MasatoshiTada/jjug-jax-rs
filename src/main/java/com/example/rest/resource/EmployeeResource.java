@@ -63,7 +63,7 @@ public class EmployeeResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByName(@QueryParam("name") @DefaultValue("") 
-            @Pattern(regexp = "[a-zA-Z]*", message = "{employee.name.pattern.alphabet}")
+            @Pattern(regexp = "[a-zA-Z\\s]*", message = "{employee.name.pattern.alphabet.or.space}")
             @Size(max = 10, message = "{employee.name.size.string}")
             String name) throws Exception {
         List<Employee> entityList = employeeService.findByName(name);
