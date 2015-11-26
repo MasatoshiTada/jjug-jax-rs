@@ -15,7 +15,7 @@ public class EmployeeDto implements Serializable {
     private String name;
     
     @JsonProperty("joined_date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Tokyo")
     private Date joinedDate;
     
     private DepartmentDto department;
