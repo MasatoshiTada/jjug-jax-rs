@@ -1,4 +1,4 @@
-package com.example.rest.excetion.dto;
+package com.example.rest.exception.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
